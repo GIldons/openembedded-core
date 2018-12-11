@@ -507,9 +507,9 @@ class DpkgOpkgRootfs(Rootfs):
             return pkg_depends_list
 
         pkgs = {}
-        pkg_name = None
+        pkg_name = ""
         pkg_status_match = False
-        pkg_depends = None
+        pkg_depends = ""
 
         with open(status_file) as status:
             data = status.read()
@@ -526,7 +526,7 @@ class DpkgOpkgRootfs(Rootfs):
                     pkg_name = m_pkg.group(1)
                     #Make sure we reset other variables
                     pkg_status_match = False
-                    pkg_depends = None
+                    pkg_depends = ""
                 elif m_status is not None:
                     #New status matched
                     pkg_status_match = True
@@ -537,7 +537,7 @@ class DpkgOpkgRootfs(Rootfs):
                     pass
 
                 #Now check if we can process package depends and postinst
-                if pkg_name is not None and pkg_status_match:
+                if "" != pkg_name and pkg_status_match:
                     pkgs[pkg_name] = _get_pkg_depends_list(pkg_depends)
                 else:
                     #Not enough information
